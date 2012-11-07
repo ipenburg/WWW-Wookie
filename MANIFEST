@@ -1,7 +1,8 @@
 Changes
 LICENSE
-Makefile.PL
+Build.PL
 MANIFEST
+MANIFEST.SKIP
 README
 SIGNATURE
 lib/WWW/Wookie.pm
