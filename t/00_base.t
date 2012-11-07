@@ -1,8 +1,3 @@
-# $Id: 00_base.t 362 2010-11-23 23:06:49Z roland $
-# $Revision: 362 $
-# $HeadURL: svn+ssh://ipenburg.xs4all.nl/srv/svnroot/barclay/trunk/t/00_base.t $
-# $Date: 2010-11-24 00:06:49 +0100 (Wed, 24 Nov 2010) $
-
 use Test::More;
 use Test::NoWarnings;
 

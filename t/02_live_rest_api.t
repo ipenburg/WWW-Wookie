@@ -1,8 +1,3 @@
-# $Id: 02_live_rest_api.t 363 2010-11-24 14:52:58Z roland $
-# $Revision: 363 $
-# $HeadURL: svn+ssh://ipenburg.xs4all.nl/srv/svnroot/barclay/trunk/t/02_live_rest_api.t $
-# $Date: 2010-11-24 15:52:58 +0100 (Wed, 24 Nov 2010) $
-
 use Exception::Class;
 use Test::More tests => 11 + 2;
 use Test::NoWarnings;

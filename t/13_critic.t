@@ -1,8 +1,3 @@
-# $Id: 13_critic.t 355 2010-11-06 23:22:51Z roland $
-# $Revision: 355 $
-# $HeadURL: svn+ssh://ipenburg.xs4all.nl/srv/svnroot/barclay/trunk/t/13_critic.t $
-# $Date: 2010-11-07 00:22:51 +0100 (Sun, 07 Nov 2010) $
-
 use strict;
 use warnings;
 use File::Spec;

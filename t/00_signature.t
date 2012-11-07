@@ -1,8 +1,3 @@
-# $Id: 00_signature.t 352 2010-11-05 23:20:48Z roland $
-# $Revision: 352 $
-# $HeadURL: svn+ssh://ipenburg.xs4all.nl/srv/svnroot/barclay/trunk/t/00_signature.t $
-# $Date: 2010-11-06 00:20:48 +0100 (Sat, 06 Nov 2010) $
-
 use strict;
 use Test::More;
 

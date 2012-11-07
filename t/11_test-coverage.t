@@ -1,8 +1,3 @@
-# $Id: 11_test-coverage.t 365 2010-11-25 01:15:48Z roland $
-# $Revision: 365 $
-# $HeadURL: svn+ssh://ipenburg.xs4all.nl/srv/svnroot/barclay/trunk/t/11_test-coverage.t $
-# $Date: 2010-11-25 02:15:48 +0100 (Thu, 25 Nov 2010) $
-
 use Test::More;
 eval "use Test::TestCoverage 0.08";
 plan skip_all => "Test::TestCoverage 0.08 required for testing test coverage"

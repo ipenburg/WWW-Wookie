@@ -2,11 +2,6 @@ package WWW::Wookie::Widget;    # -*- cperl; cperl-indent-level: 4 -*-
 use strict;
 use warnings;
 
-# $Id: Widget.pm 368 2010-11-25 21:44:45Z roland $
-# $Revision: 368 $
-# $HeadURL: svn+ssh://ipenburg.xs4all.nl/srv/svnroot/barclay/trunk/lib/WWW/Wookie/Widget.pm $
-# $Date: 2010-11-25 22:44:45 +0100 (Thu, 25 Nov 2010) $
-
 use utf8;
 use 5.006000;
 

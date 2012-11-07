@@ -1,8 +1,3 @@
-# $Id: 01_live.t 365 2010-11-25 01:15:48Z roland $
-# $Revision: 365 $
-# $HeadURL: svn+ssh://ipenburg.xs4all.nl/srv/svnroot/barclay/trunk/t/01_live.t $
-# $Date: 2010-11-25 02:15:48 +0100 (Thu, 25 Nov 2010) $
-
 use Exception::Class;
 use Test::More tests => 26 + 2;
 use Test::NoWarnings;

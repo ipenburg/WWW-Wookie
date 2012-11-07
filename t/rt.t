@@ -1,8 +1,3 @@
-# $Id: rt.t 360 2010-11-22 13:03:01Z roland $
-# $Revision: 360 $
-# $HeadURL: svn+ssh://ipenburg.xs4all.nl/srv/svnroot/barclay/trunk/t/rt.t $
-# $Date: 2010-11-22 14:03:01 +0100 (Mon, 22 Nov 2010) $
-
 use Test::More tests => 2 + 2;
 use Test::NoWarnings;
 

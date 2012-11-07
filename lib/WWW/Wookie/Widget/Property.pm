@@ -2,11 +2,6 @@ package WWW::Wookie::Widget::Property;    # -*- cperl; cperl-indent-level: 4 -*-
 use strict;
 use warnings;
 
-# $Id: Property.pm 373 2010-12-02 23:47:38Z roland $
-# $Revision: 373 $
-# $HeadURL: svn+ssh://ipenburg.xs4all.nl/srv/svnroot/barclay/trunk/lib/WWW/Wookie/Widget/Property.pm $
-# $Date: 2010-12-03 00:47:38 +0100 (Fri, 03 Dec 2010) $
-
 use utf8;
 use 5.006000;
 
