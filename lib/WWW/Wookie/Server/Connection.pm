@@ -1,19 +1,17 @@
-package WWW::Wookie::Server::Connection;  # -*- cperl; cperl-indent-level: 4 -*-
+# -*- cperl; cperl-indent-level: 4 -*-
+package WWW::Wookie::Server::Connection 0.100;
 use strict;
 use warnings;
 
 use utf8;
-use 5.006000;
+use 5.014000;
 
-our $VERSION = '0.04';
-
-use Data::Dumper;
 use Moose qw/around has/;
 use Moose::Util::TypeConstraints qw/as coerce from where subtype via/;
 use URI;
 use LWP::UserAgent;
 use XML::Simple;
-use namespace::autoclean -except => 'meta', -also => qr/^_/smx;
+use namespace::autoclean '-except' => 'meta', '-also' => qr/^_/smx;
 
 use overload '""' => 'as_string';
 
@@ -23,7 +21,8 @@ Readonly::Scalar my $EMPTY     => q{};
 Readonly::Scalar my $MORE_ARGS => 3;
 Readonly::Scalar my $ADVERTISE => q{advertise?all=true};
 Readonly::Scalar my $TIMEOUT   => 15;
-Readonly::Scalar my $AGENT     => q{WWW::Wookie/} . $VERSION;
+Readonly::Scalar my $AGENT     => q{WWW::Wookie/}
+  . $WWW::Wookie::Server::Connection::VERSION;
 Readonly::Scalar my $SERVER_CONNECTION =>
   q{Wookie Server Connection - URL: %sAPI Key: %sShared Data Key: %s};
 ## use critic
@@ -32,25 +31,25 @@ subtype 'Trailing' => as 'Str' => where { m{(^$|(/$))}gsmx };
 
 coerce 'Trailing' => from 'Str' => via { $_ =~ s{([^/])$}{$1/}gsmx; $_ };
 
-has _url => (
-    is     => 'ro',
-    isa    => 'Trailing',
-    coerce => 1,
-    reader => 'getURL',
+has '_url' => (
+    'is'     => 'ro',
+    'isa'    => 'Trailing',
+    'coerce' => 1,
+    'reader' => 'getURL',
 );
 
-has _api_key => (
-    is      => 'ro',
-    isa     => 'Str',
-    default => q{TEST},
-    reader  => 'getApiKey',
+has '_api_key' => (
+    'is'      => 'ro',
+    'isa'     => 'Str',
+    'default' => q{TEST},
+    'reader'  => 'getApiKey',
 );
 
-has _shared_data_key => (
-    is      => 'ro',
-    isa     => 'Str',
-    default => q{mysharedkey},
-    reader  => 'getSharedDataKey',
+has '_shared_data_key' => (
+    'is'      => 'ro',
+    'isa'     => 'Str',
+    'default' => q{mysharedkey},
+    'reader'  => 'getSharedDataKey',
 );
 
 sub as_string {
@@ -64,15 +63,15 @@ sub test {
     my $url  = $self->getURL;
     if ( $url ne $EMPTY ) {
         my $ua = LWP::UserAgent->new(
-            timeout => $TIMEOUT,
-            agent   => $AGENT,
+            'timeout' => $TIMEOUT,
+            'agent'   => $AGENT,
         );
         my $response = $ua->get( $url . $ADVERTISE );
         if ( $response->is_success ) {
             my $xml_obj =
-              XML::Simple->new( ForceArray => 1, KeyAttr => 'identifier' )
+              XML::Simple->new( 'ForceArray' => 1, 'KeyAttr' => 'identifier' )
               ->XMLin( $response->content );
-            if ( exists $xml_obj->{widget} ) {
+            if ( exists $xml_obj->{'widget'} ) {
                 return 1;
             }
         }
@@ -80,16 +79,16 @@ sub test {
     return 0;
 }
 
-around BUILDARGS => sub {
+around 'BUILDARGS' => sub {
     my $orig  = shift;
     my $class = shift;
 
     if ( @_ == $MORE_ARGS && !ref $_[0] ) {
         my ( $url, $api_key, $shareddata_key ) = @_;
         return $class->$orig(
-            _url             => $url,
-            _api_key         => $api_key,
-            _shared_data_key => $shareddata_key,
+            '_url'             => $url,
+            '_api_key'         => $api_key,
+            '_shared_data_key' => $shareddata_key,
         );
     }
     return $class->$orig(@_);
@@ -107,15 +106,13 @@ __END__
 
 =encoding utf8
 
-=for stopwords Roland van Ipenburg Wookie API Readonly URI URL
-
 =head1 NAME
 
 WWW::Wookie::Server::Connection - A connection to a Wookie server
 
 =head1 VERSION
 
-This document describes WWW::Wookie::Server::Connection version 0.04
+This document describes WWW::Wookie::Server::Connection version 0.100
 
 =head1 SYNOPSIS
 
@@ -183,15 +180,25 @@ Test the Wookie server connection.
 
 =head1 DEPENDENCIES
 
-L<Data::Dumper|Data::Dumper>
-L<LWP::UserAgent|LWP::UserAgent>
-L<Moose|Moose>
-L<Moose::Util::TypeConstraints|Moose::Util::TypeConstraints>
-L<Readonly|Readonly>
-L<URI|URI>
-L<XML::Simple|XML::Simple>
-L<namespace::autoclean|namespace::autoclean>
-L<overload|overload>
+=over 4
+
+=item * L<LWP::UserAgent|LWP::UserAgent>
+
+=item * L<Moose|Moose>
+
+=item * L<Moose::Util::TypeConstraints|Moose::Util::TypeConstraints>
+
+=item * L<Readonly|Readonly>
+
+=item * L<URI|URI>
+
+=item * L<XML::Simple|XML::Simple>
+
+=item * L<namespace::autoclean|namespace::autoclean>
+
+=item * L<overload|overload>
+
+=back
 
 =head1 INCOMPATIBILITIES
 
@@ -204,24 +211,37 @@ rt.cpan.org|https://rt.cpan.org/Dist/Display.html?Queue=WWW-Wookie>.
 
 =head1 AUTHOR
 
-Roland van Ipenburg  C<< <ipenburg@xs4all.nl> >>
+Roland van Ipenburg, E<lt>ipenburg@xs4all.nlE<gt>
 
 =head1 LICENSE AND COPYRIGHT
 
-    Copyright 2010 Roland van Ipenburg
+Copyright 2012 by Roland van Ipenburg
 
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-        http://www.apache.org/licenses/LICENSE-2.0
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself, either Perl version 5.14.0 or,
+at your option, any later version of Perl 5 you may have available.
 
 =head1 DISCLAIMER OF WARRANTY
 
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
+BECAUSE THIS SOFTWARE IS LICENSED FREE OF CHARGE, THERE IS NO WARRANTY
+FOR THE SOFTWARE, TO THE EXTENT PERMITTED BY APPLICABLE LAW. EXCEPT WHEN
+OTHERWISE STATED IN WRITING THE COPYRIGHT HOLDERS AND/OR OTHER PARTIES
+PROVIDE THE SOFTWARE "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER
+EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE
+ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE SOFTWARE IS WITH
+YOU. SHOULD THE SOFTWARE PROVE DEFECTIVE, YOU ASSUME THE COST OF ALL
+NECESSARY SERVICING, REPAIR, OR CORRECTION.
+
+IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING
+WILL ANY COPYRIGHT HOLDER, OR ANY OTHER PARTY WHO MAY MODIFY AND/OR
+REDISTRIBUTE THE SOFTWARE AS PERMITTED BY THE ABOVE LICENSE, BE
+LIABLE TO YOU FOR DAMAGES, INCLUDING ANY GENERAL, SPECIAL, INCIDENTAL,
+OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR INABILITY TO USE
+THE SOFTWARE (INCLUDING BUT NOT LIMITED TO LOSS OF DATA OR DATA BEING
+RENDERED INACCURATE OR LOSSES SUSTAINED BY YOU OR THIRD PARTIES OR A
+FAILURE OF THE SOFTWARE TO OPERATE WITH ANY OTHER SOFTWARE), EVEN IF
+SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGES.
 
 =cut

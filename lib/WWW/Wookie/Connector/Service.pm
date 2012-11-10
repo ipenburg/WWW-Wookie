@@ -1,11 +1,10 @@
-package WWW::Wookie::Connector::Service;  # -*- cperl; cperl-indent-level: 4 -*-
+# -*- cperl; cperl-indent-level: 4 -*-
+package WWW::Wookie::Connector::Service 0.100;
 use strict;
 use warnings;
 
 use utf8;
-use 5.006000;
-
-our $VERSION = '0.04';
+use 5.014000;
 
 use Exception::Class;
 use HTTP::Headers;
@@ -19,7 +18,7 @@ use MooseX::AttributeHelpers;
 use Regexp::Common qw(URI);
 use URI::Escape qw(uri_escape);
 use XML::Simple;
-use namespace::autoclean -except => 'meta', -also => qr/^__/sxm;
+use namespace::autoclean '-except' => 'meta', '-also' => qr/^__/sxm;
 
 use WWW::Wookie::Connector::Exceptions;
 use WWW::Wookie::Server::Connection;
@@ -34,8 +33,9 @@ use Readonly;
 ## no critic qw(ProhibitCallsToUnexportedSubs)
 Readonly::Scalar my $DEFAULT_ICON =>
   q{http://www.oss-watch.ac.uk/images/logo2.gif};
-Readonly::Scalar my $TIMEOUT  => 15;
-Readonly::Scalar my $AGENT    => q{WWW::Wookie/} . $VERSION;
+Readonly::Scalar my $TIMEOUT => 15;
+Readonly::Scalar my $AGENT   => q{WWW::Wookie/}
+  . $WWW::Wookie::Connector::Service::VERSION;
 Readonly::Scalar my $TESTUSER => q{testuser};
 
 Readonly::Scalar my $EMPTY => q{};
@@ -63,24 +63,24 @@ Readonly::Scalar my $DEFAULT_SCHEME => q{http};
 Readonly::Scalar my $VALID_SCHEMES  => $DEFAULT_SCHEME . q{s?};    # http(s)
 
 Readonly::Hash my %LOG => (
-    GET_USERS     => q{Getting users for instance of '%s'},
-    USING_URL     => q{Using URL '%s'},
-    RESPONSE_CODE => q{Got response code %s},
-    DO_REQUEST    => q{Requesting %s '%s'},
-    ALL_TRUE      => q{Requesting all widgets},
+    'GET_USERS'     => q{Getting users for instance of '%s'},
+    'USING_URL'     => q{Using URL '%s'},
+    'RESPONSE_CODE' => q{Got response code %s},
+    'DO_REQUEST'    => q{Requesting %s '%s'},
+    'ALL_TRUE'      => q{Requesting all widgets},
 );
 
 Readonly::Hash my %ERR => (
-    NO_WIDGET_INSTANCE     => q{No Widget instance},
-    NO_PROPERTIES_INSTANCE => q{No properties instance},
-    NO_USER_OBJECT         => q{No User object},
-    NO_WIDGET_GUID         => q{No GUID nor widget object},
-    MALFORMED_URL => q{URL for supplied Wookie Server is malformed: %s},
-    INCORRECT_PARTICIPANTS_REST_URL =>
+    'NO_WIDGET_INSTANCE'     => q{No Widget instance},
+    'NO_PROPERTIES_INSTANCE' => q{No properties instance},
+    'NO_USER_OBJECT'         => q{No User object},
+    'NO_WIDGET_GUID'         => q{No GUID nor widget object},
+    'MALFORMED_URL' => q{URL for supplied Wookie Server is malformed: %s},
+    'INCORRECT_PARTICIPANTS_REST_URL' =>
       q{Participants rest URL is incorrect: %s},
-    INCORRECT_PROPERTIES_REST_URL => q{Properties rest URL is incorrect: %s},
-    INVALID_API_KEY               => q{Invalid API key},
-    HTTP                          => q{%s<br />%s},
+    'INCORRECT_PROPERTIES_REST_URL' => q{Properties rest URL is incorrect: %s},
+    'INVALID_API_KEY'               => q{Invalid API key},
+    'HTTP'                          => q{%s<br />%s},
 );
 ## use critic
 
@@ -89,25 +89,25 @@ Log::Log4perl::easy_init($ERROR);
 ## use critic
 
 has '_logger' => (
-    is  => 'ro',
-    isa => 'Log::Log4perl::Logger',
-    default =>
+    'is'  => 'ro',
+    'isa' => 'Log::Log4perl::Logger',
+    'default' =>
       sub { Log::Log4perl->get_logger('WWW::Wookie::Connector::Service') },
-    reader => 'getLogger',
+    'reader' => 'getLogger',
 );
 
 has '_conn' => (
-    is     => 'rw',
-    isa    => 'WWW::Wookie::Server::Connection',
-    reader => 'getConnection',
-    writer => '_setConnection',
+    'is'     => 'rw',
+    'isa'    => 'WWW::Wookie::Server::Connection',
+    'reader' => 'getConnection',
+    'writer' => '_setConnection',
 );
 
 has '_locale' => (
-    is     => 'rw',
-    isa    => 'Str',
-    reader => 'getLocale',
-    writer => 'setLocale',
+    'is'     => 'rw',
+    'isa'    => 'Str',
+    'reader' => 'getLocale',
+    'writer' => 'setLocale',
 );
 
 ## no critic qw(Capitalization)
@@ -115,25 +115,25 @@ sub getAvailableServices {
 ## use critic
     my ( $self, $service_name ) = @_;
     my $url = $self->_append_path($SERVICES);
-    __check_url( $url, $ERR{MALFORMED_URL} );
+    __check_url( $url, $ERR{'MALFORMED_URL'} );
     my $content = {};
     if ($service_name) {
         $url .= $SLASH . URI::Escape::uri_escape($service_name);
     }
     if ( $self->getLocale ) {
-        $content->{locale} = $self->getLocale;
+        $content->{'locale'} = $self->getLocale;
     }
 
     my %services = ();
     my $response = $self->_do_request( $url, $content, $GET );
     my $xml_obj  = XML::Simple->new(
-        ForceArray => 1,
-        KeyAttr    => { widget => q{identifier}, service => q{name} }
+        'ForceArray' => 1,
+        'KeyAttr'    => { 'widget' => q{identifier}, 'service' => q{name} },
     )->XMLin( $response->content );
-    while ( my ( $name, $value ) = each %{ $xml_obj->{service} } ) {
+    while ( my ( $name, $value ) = each %{ $xml_obj->{'service'} } ) {
         $self->getLogger->debug($name);
-        my $service = WWW::Wookie::Widget::Category->new( name => $name );
-        while ( my ( $id, $value ) = each %{ $value->{widget} } ) {
+        my $service = WWW::Wookie::Widget::Category->new( 'name' => $name );
+        while ( my ( $id, $value ) = each %{ $value->{'widget'} } ) {
             $service->put(
                 WWW::Wookie::Widget->new( $id, $self->_parse_widget($value) ) );
         }
@@ -150,34 +150,34 @@ sub getAvailableWidgets {
     my $url     = $self->_append_path($WIDGETS);
     my $content = {};
     if ( !defined $service || $service eq $ALL ) {
-        $self->getLogger->debug( $LOG{ALL_TRUE} );
-        $content->{all} = q{true};
+        $self->getLogger->debug( $LOG{'ALL_TRUE'} );
+        $content->{'all'} = q{true};
     }
     elsif ($service) {
         $url .= $SLASH . URI::Escape::uri_escape($service);
     }
     if ( $self->getLocale ) {
-        $content->{locale} = $self->getLocale;
+        $content->{'locale'} = $self->getLocale;
     }
-    __check_url( $url, $ERR{MALFORMED_URL} );
+    __check_url( $url, $ERR{'MALFORMED_URL'} );
 
     my $response = $self->_do_request( $url, $content, $GET );
     my $xml_obj =
-      XML::Simple->new( ForceArray => 1, KeyAttr => 'identifier' )
+      XML::Simple->new( 'ForceArray' => 1, 'KeyAttr' => 'identifier' )
       ->XMLin( $response->content );
-    while ( my ( $id, $value ) = each %{ $xml_obj->{widget} } ) {
+    while ( my ( $id, $value ) = each %{ $xml_obj->{'widget'} } ) {
         $widgets{$id} =
           WWW::Wookie::Widget->new( $id,
-            $self->_parse_widget( $xml_obj->{widget}->{$id} ) );
+            $self->_parse_widget( $xml_obj->{'widget'}->{$id} ) );
     }
     return values %widgets;
 }
 
 has '_user' => (
-    is     => 'ro',
-    isa    => 'WWW::Wookie::User',
-    reader => '_getUser',
-    writer => '_setUser',
+    'is'     => 'ro',
+    'isa'    => 'WWW::Wookie::User',
+    'reader' => '_getUser',
+    'writer' => '_setUser',
 );
 
 ## no critic qw(Capitalization)
@@ -199,10 +199,10 @@ sub setUser {
 }
 
 has 'WidgetInstances' => (
-    is      => 'rw',
-    isa     => 'WWW::Wookie::Widget::Instances',
-    default => sub { WWW::Wookie::Widget::Instances->new() },
-    writer  => '_setWidgetInstances',
+    'is'      => 'rw',
+    'isa'     => 'WWW::Wookie::Widget::Instances',
+    'default' => sub { WWW::Wookie::Widget::Instances->new() },
+    'writer'  => '_setWidgetInstances',
 );
 
 ## no critic qw(Capitalization)
@@ -213,18 +213,20 @@ sub getWidget {
       grep { $_->getIdentifier eq $widget_id } $self->getAvailableWidgets;
     return shift @widgets;
 
+    ## no critic qw(ProhibitCommentedOutCode)
     # API method isn't implemented using proper id on the server.
     #my $url = $self->_append_path($WIDGETS);
     #if ( defined $widget_id ) {
     #    $url .= $SLASH . URI::Escape::uri_escape($widget_id);
     #}
-    #__check_url($url, $ERR{MALFORMED_URL});
+    #__check_url($url, $ERR{'MALFORMED_URL'});
 
     #my $response = $self->_do_request( $url, {}, $GET );
-    #my $xs = XML::Simple->new( ForceArray => 1, KeyAttr => 'identifier' );
+    #my $xs = XML::Simple->new( 'ForceArray' => 1, 'KeyAttr' => 'identifier' );
     #my $xml_obj = $xs->XMLin( $response->content );
     #return WWW::Wookie::Widget->new( $widget_id,
     #    $self->_parse_widget($xml_obj) );
+    ## use critic
 }
 
 ## no critic qw(Capitalization)
@@ -239,14 +241,15 @@ sub getOrCreateInstance {
         if ( defined $guid && $guid eq $EMPTY )
         {
             ## no critic qw(RequireExplicitInclusion)
-            WookieConnectorException->throw( error => $ERR{NO_WIDGET_GUID} );
+            WookieConnectorException->throw(
+                'error' => $ERR{'NO_WIDGET_GUID'} );
             ## use critic
         }
         my $url = $self->_append_path($WIDGETINSTANCES);
-        __check_url( $url, $ERR{MALFORMED_URL} );
-        my $content = { widgetid => $guid };
+        __check_url( $url, $ERR{'MALFORMED_URL'} );
+        my $content = { 'widgetid' => $guid };
         if ( my $locale = $self->getLocale ) {
-            $content->{locale} = $locale;
+            $content->{'locale'} = $locale;
         }
         my $response = $self->_do_request( $url, $content );
         if ( $response->code == HTTP_CREATED ) {
@@ -254,7 +257,8 @@ sub getOrCreateInstance {
         }
         if ( $response->code == HTTP_UNAUTHORIZED ) {
             ## no critic qw(RequireExplicitInclusion)
-            WookieConnectorException->throw( error => $ERR{INVALID_API_KEY} );
+            WookieConnectorException->throw(
+                'error' => $ERR{'INVALID_API_KEY'} );
             ## use critic
         }
         my $instance = $self->_parse_instance( $guid, $response->content );
@@ -280,31 +284,31 @@ sub getUsers {
     if ( ref $instance ne q{WWW::Wookie::Widget::Instance} ) {
         $instance = $self->getOrCreateInstance($instance);
     }
-    $self->getLogger->debug( sprintf $LOG{GET_USERS},
+    $self->getLogger->debug( sprintf $LOG{'GET_USERS'},
         $instance->getIdentifier );
     my $url = $self->_append_path($PARTICIPANTS);
-    $self->getLogger->debug( sprintf $LOG{USING_URL}, $url );
+    $self->getLogger->debug( sprintf $LOG{'USING_URL'}, $url );
 
-    __check_url( $url, $ERR{MALFORMED_URL} );
+    __check_url( $url, $ERR{'MALFORMED_URL'} );
     my $response =
-      $self->_do_request( $url, { widgetid => $instance->getIdentifier, }, $GET,
-      );
+      $self->_do_request( $url, { 'widgetid' => $instance->getIdentifier, },
+        $GET, );
 
     if ( $response->code > HTTP_OK ) {
         __throw_http_err($response);
     }
     my $xml_obj =
-      XML::Simple->new( ForceArray => 1, KeyAttr => 'identifier' )
+      XML::Simple->new( 'ForceArray' => 1, 'KeyAttr' => 'identifier' )
       ->XMLin( $response->content );
     my @users = ();
-    for my $participant ( @{ $xml_obj->{participant} } ) {
-        my $id            = $participant->{id};
-        my $name          = $participant->{displayName};
-        my $thumbnail_url = $participant->{thumbnail_url};
+    for my $participant ( @{ $xml_obj->{'participant'} } ) {
+        my $id            = $participant->{'id'};
+        my $name          = $participant->{'displayName'};
+        my $thumbnail_url = $participant->{'thumbnail_url'};
         my $new_user      = WWW::Wookie::User->new(
             $id,
-            defined $name || $id,
-            defined $thumbnail_url || $EMPTY
+            defined $name          || $id,
+            defined $thumbnail_url || $EMPTY,
         );
         push @users, $new_user;
     }
@@ -316,14 +320,14 @@ sub addProperty {
 ## use critic
     my ( $self, $widget, $property ) = @_;
     my $url = $self->_append_path($PROPERTIES);
-    __check_url( $url, $ERR{INCORRECT_PROPERTIES_REST_URL} );
+    __check_url( $url, $ERR{'INCORRECT_PROPERTIES_REST_URL'} );
     my $response = $self->_do_request(
         $url,
         {
-            widgetid      => $widget->getIdentifier,
-            propertyname  => $property->getName,
-            propertyvalue => $property->getValue,
-            is_public     => $property->getIsPublic,
+            'widgetid'      => $widget->getIdentifier,
+            'propertyname'  => $property->getName,
+            'propertyvalue' => $property->getValue,
+            'is_public'     => $property->getIsPublic,
         },
         $POST,
     );
@@ -343,14 +347,14 @@ sub getProperty {
     my $url = $self->_append_path($PROPERTIES);
     __check_widget($widget_instance);
     __check_property($property_instance);
-    __check_url( $url, $ERR{MALFORMED_URL} );
+    __check_url( $url, $ERR{'MALFORMED_URL'} );
     my $response = $self->_do_request(
         $url,
         {
             'widgetid'     => $widget_instance->getIdentifier,
             'propertyname' => $property_instance->getName,
         },
-        $GET
+        $GET,
     );
     if ( !$response->is_success ) {
         __throw_http_err($response);
@@ -369,17 +373,19 @@ sub setProperty {
     my $result = eval {
         __check_widget($widget);
         __check_property($property);
-        __check_url( $url, $ERR{INCORRECT_PROPERTIES_REST_URL} );
+        __check_url( $url, $ERR{'INCORRECT_PROPERTIES_REST_URL'} );
         my $response = $self->_do_request(
             $url,
             {
-                widgetid      => $widget->getIdentifier,
-                propertyname  => $property->getName,
-                propertyvalue => $property->getValue,
-                is_public     => $property->getIsPublic,
+                'widgetid'      => $widget->getIdentifier,
+                'propertyname'  => $property->getName,
+                'propertyvalue' => $property->getValue,
+                'is_public'     => $property->getIsPublic,
             },
 
+            ## no critic qw(ProhibitFlagComments)
             # TODO: $PUT breaks, but should be used instead of $POST
+            ## use critic
             $POST,
         );
         if ( $response->code == HTTP_CREATED || $response == HTTP_OK ) {
@@ -407,14 +413,14 @@ sub deleteProperty {
 ## use critic
     my ( $self, $widget, $property ) = @_;
     my $url = $self->_append_path($PROPERTIES);
-    __check_url( $url, $ERR{INCORRECT_PROPERTIES_REST_URL} );
+    __check_url( $url, $ERR{'INCORRECT_PROPERTIES_REST_URL'} );
     __check_widget($widget);
     __check_property($property);
     my $response = $self->_do_request(
         $url,
         {
-            widgetid     => $widget->getIdentifier,
-            propertyname => $property->getName,
+            'widgetid'     => $widget->getIdentifier,
+            'propertyname' => $property->getName,
         },
         $DELETE,
     );
@@ -430,14 +436,14 @@ sub addParticipant {
     my ( $self, $widget_instance, $user ) = @_;
     __check_widget($widget_instance);
     my $url = $self->_append_path($PARTICIPANTS);
-    __check_url( $url, $ERR{INCORRECT_PARTICIPANTS_REST_URL} );
+    __check_url( $url, $ERR{'INCORRECT_PARTICIPANTS_REST_URL'} );
     my $response = $self->_do_request(
         $url,
         {
-            widgetid                  => $widget_instance->getIdentifier,
-            participant_id            => $self->getUser->getLoginName,
-            participant_display_name  => $user->getScreenName,
-            participant_thumbnail_url => $user->getThumbnailUrl,
+            'widgetid'                  => $widget_instance->getIdentifier,
+            'participant_id'            => $self->getUser->getLoginName,
+            'participant_display_name'  => $user->getScreenName,
+            'participant_thumbnail_url' => $user->getThumbnailUrl,
         },
     );
     if ( $response->code == HTTP_OK ) {
@@ -458,14 +464,14 @@ sub deleteParticipant {
     my ( $self, $widget, $user ) = @_;
     __check_widget($widget);
     my $url = $self->_append_path($PARTICIPANTS);
-    __check_url( $url, $ERR{INCORRECT_PARTICIPANTS_REST_URL} );
+    __check_url( $url, $ERR{'INCORRECT_PARTICIPANTS_REST_URL'} );
     my $response = $self->_do_request(
         $url,
         {
-            widgetid                  => $widget->getIdentifier,
-            participant_id            => $self->getUser->getLoginName,
-            participant_display_name  => $user->getScreenName,
-            participant_thumbnail_url => $user->getThumbnailUrl,
+            'widgetid'                  => $widget->getIdentifier,
+            'participant_id'            => $self->getUser->getLoginName,
+            'participant_display_name'  => $user->getScreenName,
+            'participant_thumbnail_url' => $user->getThumbnailUrl,
         },
         $DELETE,
     );
@@ -490,17 +496,17 @@ sub _setWidgetInstancesHolder {
 }
 
 has '_ua' => (
-    is      => 'rw',
-    isa     => 'LWP::UserAgent',
-    default => sub {
+    'is'      => 'rw',
+    'isa'     => 'LWP::UserAgent',
+    'default' => sub {
         LWP::UserAgent->new(
-            timeout => $TIMEOUT,
-            agent   => $AGENT,
+            'timeout' => $TIMEOUT,
+            'agent'   => $AGENT,
         );
     },
 );
 
-around BUILDARGS => sub {
+around 'BUILDARGS' => sub {
     my $orig  = shift;
     my $class = shift;
 
@@ -510,9 +516,9 @@ around BUILDARGS => sub {
     if ( @_ == $MOST_ARGS && !ref $_[0] ) {
         my ( $url, $api_key, $shareddata_key, $loginname, $screenname ) = @_;
         return $class->$orig(
-            _user => WWW::Wookie::User->new( $loginname, $screenname ),
-            _conn => WWW::Wookie::Server::Connection->new(
-                $url, $api_key, $shareddata_key
+            '_user' => WWW::Wookie::User->new( $loginname, $screenname ),
+            '_conn' => WWW::Wookie::Server::Connection->new(
+                $url, $api_key, $shareddata_key,
             ),
         );
     }
@@ -532,9 +538,10 @@ sub _append_path {
 
 sub __check_url {
     my ( $url, $message ) = @_;
-    if ( $url !~ m{^$RE{URI}{HTTP}{-keep}{ -scheme => $VALID_SCHEMES }$}smx ) {
+    if ( $url !~ m{^$RE{URI}{HTTP}{-keep}{ '-scheme' => $VALID_SCHEMES }$}smx )
+    {
         ## no critic qw(RequireExplicitInclusion)
-        WookieConnectorException->throw( error => sprintf $message, $url );
+        WookieConnectorException->throw( 'error' => sprintf $message, $url );
         ## use critic
     }
     return;
@@ -546,7 +553,7 @@ sub __check_widget {
         ## no critic qw(RequireExplicitInclusion)
         WookieWidgetInstanceException->throw(
             ## use critic
-            error => $ERR{NO_WIDGET_INSTANCE}
+            'error' => $ERR{'NO_WIDGET_INSTANCE'},
         );
     }
     return;
@@ -558,7 +565,7 @@ sub __check_property {
         ## no critic qw(RequireExplicitInclusion)
         WookieConnectorException->throw(
             ## use critic
-            error => $ERR{NO_PROPERTIES_INSTANCE}
+            'error' => $ERR{'NO_PROPERTIES_INSTANCE'},
         );
     }
     return;
@@ -569,51 +576,53 @@ sub __throw_http_err {
     ## no critic qw(RequireExplicitInclusion)
     WookieConnectorException->throw(
         ## use critic
-        error => sprintf $ERR{HTTP},
-        $response->headers->as_string, $response->content
+        'error' => sprintf $ERR{'HTTP'},
+        $response->headers->as_string, $response->content,
     );
     return;
 }
 
 sub _do_request {
-    my ( $self, $url, $data, $method ) = @_;
+    my ( $self, $url, $payload, $method ) = @_;
 
     # Widgets and Services request doesn't require API key stuff:
-    if ( $url !~ m{/(widgets|services)([?/]|$)}gismx ) {
-        $data = {
-            api_key       => $self->getConnection->getApiKey,
-            shareddatakey => $self->getConnection->getSharedDataKey,
-            userid        => $self->getUser->getLoginName,
-            %{$data},
+    if ( $url !~ m{/(?:widgets|services)(?:[?/]|$)}gismx ) {
+        $payload = {
+            'api_key'       => $self->getConnection->getApiKey,
+            'shareddatakey' => $self->getConnection->getSharedDataKey,
+            'userid'        => $self->getUser->getLoginName,
+            %{$payload},
         };
     }
     if ( !defined $method ) {
         $method = $POST;
     }
 
-    if ( ( my $content = [ POST $url, [ %{$data} ] ]->[0]->content ) ne $EMPTY )
+    if ( ( my $content = [ POST $url, [ %{$payload} ] ]->[0]->content ) ne
+        $EMPTY )
     {
         $url .= $QUERY . $content;
     }
-    $self->getLogger->debug( sprintf $LOG{DO_REQUEST}, $method, $url );
+    $self->getLogger->debug( sprintf $LOG{'DO_REQUEST'}, $method, $url );
     my $request = HTTP::Request->new(
         $method => $url,
         HTTP::Headers->new(),
     );
     my $response = $self->_ua->request($request);
-    $self->getLogger->debug( sprintf $LOG{RESPONSE_CODE}, $response->code );
+    $self->getLogger->debug( sprintf $LOG{'RESPONSE_CODE'}, $response->code );
     return $response;
 }
 
 sub _parse_instance {
     my ( $self, $guid, $xml ) = @_;
     my $xml_obj =
-      XML::Simple->new( ForceArray => 1, KeyAttr => 'identifier' )->XMLin($xml);
+      XML::Simple->new( 'ForceArray' => 1, 'KeyAttr' => 'identifier' )
+      ->XMLin($xml);
     if (
         my $instance = WWW::Wookie::Widget::Instance->new(
-            $xml_obj->{url}[0],   $guid,
-            $xml_obj->{title}[0], $xml_obj->{height}[0],
-            $xml_obj->{width}[0]
+            $xml_obj->{'url'}[0],   $guid,
+            $xml_obj->{'title'}[0], $xml_obj->{'height'}[0],
+            $xml_obj->{'width'}[0],
         )
       )
     {
@@ -626,15 +635,15 @@ sub _parse_instance {
 
 sub _parse_widget {
     my ( $self, $xml ) = @_;
-    my $title = $xml->{title}[0]->{content};
+    my $title = $xml->{'title'}[0]->{'content'};
     my $description =
-      ref $xml->{description}[0]
-      ? $xml->{description}[0]->{content}
-      : $xml->{description}[0];
+      ref $xml->{'description'}[0]
+      ? $xml->{'description'}[0]->{'content'}
+      : $xml->{'description'}[0];
     my $icon =
-      ref $xml->{icon}[0]
-      ? $xml->{icon}[0]->{content}
-      : $xml->{icon}[0];
+      ref $xml->{'icon'}[0]
+      ? $xml->{'icon'}[0]->{'content'}
+      : $xml->{'icon'}[0];
     if ( !$icon ) {
         $icon = $DEFAULT_ICON;
     }
@@ -655,8 +664,6 @@ __END__
 
 =encoding utf8
 
-=for stopwords Roland van Ipenburg Wookie Readonly API login URL guid
-
 =head1 NAME
 
 WWW::Wookie::Connector::Service - Wookie connector service, handles all the
@@ -664,7 +671,7 @@ data requests and responses
 
 =head1 VERSION
 
-This document describes WWW::Wookie::Connector::Service version 0.04
+This document describes WWW::Wookie::Connector::Service version 0.100
 
 =head1 SYNOPSIS
 
@@ -885,26 +892,49 @@ Get the current locale setting. Returns current locale as string.
 
 =head1 DEPENDENCIES
 
-L<HTTP::Headers|HTTP::Headers>
-L<HTTP::Request|HTTP::Request>
-L<HTTP::Request::Common|HTTP::Request::Common>
-L<HTTP::Status|HTTP::Status>
-L<LWP::UserAgent|LWP::UserAgent>
-L<Log::Log4perl|Log::Log4perl>
-L<Moose|Moose>
-L<Moose::Util::TypeConstraints|Moose::Util::TypeConstraints>
-L<MooseX::AttributeHelpers|MooseX::AttributeHelpers>
-L<Readonly|Readonly>
-L<Regexp::Common|Regexp::Common>
-L<WWW::Wookie::Connector::Exceptions|WWW::Wookie::Connector::Exceptions>
-L<WWW::Wookie::Server::Connection|WWW::Wookie::Server::Connection>
-L<WWW::Wookie::User|WWW::Wookie::User>
-L<WWW::Wookie::Widget::Instance|WWW::Wookie::Widget::Instance>
-L<WWW::Wookie::Widget::Instances|WWW::Wookie::Widget::Instances>
-L<WWW::Wookie::Widget::Property|WWW::Wookie::Widget::Property>
-L<WWW::Wookie::Widget|WWW::Wookie::Widget>
-L<XML::Simple|XML::Simple>
-L<namespace::autoclean|namespace::autoclean>
+=over 4
+
+=item * L<HTTP::Headers|HTTP::Headers>
+
+=item * L<HTTP::Request|HTTP::Request>
+
+=item * L<HTTP::Request::Common|HTTP::Request::Common>
+
+=item * L<HTTP::Status|HTTP::Status>
+
+=item * L<LWP::UserAgent|LWP::UserAgent>
+
+=item * L<Log::Log4perl|Log::Log4perl>
+
+=item * L<Moose|Moose>
+
+=item * L<Moose::Util::TypeConstraints|Moose::Util::TypeConstraints>
+
+=item * L<MooseX::AttributeHelpers|MooseX::AttributeHelpers>
+
+=item * L<Readonly|Readonly>
+
+=item * L<Regexp::Common|Regexp::Common>
+
+=item * L<WWW::Wookie::Connector::Exceptions|WWW::Wookie::Connector::Exceptions>
+
+=item * L<WWW::Wookie::Server::Connection|WWW::Wookie::Server::Connection>
+
+=item * L<WWW::Wookie::User|WWW::Wookie::User>
+
+=item * L<WWW::Wookie::Widget::Instance|WWW::Wookie::Widget::Instance>
+
+=item * L<WWW::Wookie::Widget::Instances|WWW::Wookie::Widget::Instances>
+
+=item * L<WWW::Wookie::Widget::Property|WWW::Wookie::Widget::Property>
+
+=item * L<WWW::Wookie::Widget|WWW::Wookie::Widget>
+
+=item * L<XML::Simple|XML::Simple>
+
+=item * L<namespace::autoclean|namespace::autoclean>
+
+=back
 
 =head1 INCOMPATIBILITIES
 
@@ -917,24 +947,37 @@ rt.cpan.org|https://rt.cpan.org/Dist/Display.html?Queue=WWW-Wookie>.
 
 =head1 AUTHOR
 
-Roland van Ipenburg  C<< <ipenburg@xs4all.nl> >>
+Roland van Ipenburg, E<lt>ipenburg@xs4all.nlE<gt>
 
 =head1 LICENSE AND COPYRIGHT
 
-    Copyright 2010 Roland van Ipenburg
+Copyright 2012 by Roland van Ipenburg
 
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-        http://www.apache.org/licenses/LICENSE-2.0
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself, either Perl version 5.14.0 or,
+at your option, any later version of Perl 5 you may have available.
 
 =head1 DISCLAIMER OF WARRANTY
 
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
+BECAUSE THIS SOFTWARE IS LICENSED FREE OF CHARGE, THERE IS NO WARRANTY
+FOR THE SOFTWARE, TO THE EXTENT PERMITTED BY APPLICABLE LAW. EXCEPT WHEN
+OTHERWISE STATED IN WRITING THE COPYRIGHT HOLDERS AND/OR OTHER PARTIES
+PROVIDE THE SOFTWARE "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER
+EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE
+ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE SOFTWARE IS WITH
+YOU. SHOULD THE SOFTWARE PROVE DEFECTIVE, YOU ASSUME THE COST OF ALL
+NECESSARY SERVICING, REPAIR, OR CORRECTION.
+
+IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING
+WILL ANY COPYRIGHT HOLDER, OR ANY OTHER PARTY WHO MAY MODIFY AND/OR
+REDISTRIBUTE THE SOFTWARE AS PERMITTED BY THE ABOVE LICENSE, BE
+LIABLE TO YOU FOR DAMAGES, INCLUDING ANY GENERAL, SPECIAL, INCIDENTAL,
+OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR INABILITY TO USE
+THE SOFTWARE (INCLUDING BUT NOT LIMITED TO LOSS OF DATA OR DATA BEING
+RENDERED INACCURATE OR LOSSES SUSTAINED BY YOU OR THIRD PARTIES OR A
+FAILURE OF THE SOFTWARE TO OPERATE WITH ANY OTHER SOFTWARE), EVEN IF
+SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGES.
 
 =cut

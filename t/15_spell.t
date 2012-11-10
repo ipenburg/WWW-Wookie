@@ -21,6 +21,16 @@ Test::Spelling::all_pod_files_spelling_ok();
 __DATA__
 Ipenburg
 RT
-rt
 cpan
+guid
 org
+rt
+wookie
+Readonly
+URL
+URI
+API
+url
+plugins
+PHP
+CGI

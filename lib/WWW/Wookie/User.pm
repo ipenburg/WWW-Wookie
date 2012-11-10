@@ -1,15 +1,13 @@
-package WWW::Wookie::User;    # -*- cperl; cperl-indent-level: 4 -*-
+package WWW::Wookie::User 0.100;    # -*- cperl; cperl-indent-level: 4 -*-
 use strict;
 use warnings;
 
 use utf8;
-use 5.006000;
-
-our $VERSION = '0.04';
+use 5.014000;
 
 use Moose qw/around has/;
 use Moose::Util::TypeConstraints qw/as coerce from where subtype via/;
-use namespace::autoclean -except => 'meta', -also => qr/^_/sxm;
+use namespace::autoclean '-except' => 'meta', '-also' => qr/^_/sxm;
 
 use Readonly;
 ## no critic qw(ProhibitCallsToUnexportedSubs)
@@ -23,32 +21,32 @@ subtype 'Trimmed' => as 'Str' => where { m{(^$|(^\S|\S$))}gsmx };
 coerce 'Trimmed' => from 'Str' => via { $_ =~ s{^\s+(.*)\s+$}{$1}gsmx; $_ };
 
 has 'loginName' => (
-    is      => 'rw',
-    isa     => 'Trimmed',
-    coerce  => 1,
-    default => $UNKNOWN,
-    reader  => 'getLoginName',
-    writer  => 'setLoginName',
+    'is'      => 'rw',
+    'isa'     => 'Trimmed',
+    'coerce'  => 1,
+    'default' => $UNKNOWN,
+    'reader'  => 'getLoginName',
+    'writer'  => 'setLoginName',
 );
 
 has 'screenName' => (
-    is      => 'rw',
-    isa     => 'Trimmed',
-    coerce  => 1,
-    default => $UNKNOWN,
-    reader  => 'getScreenName',
-    writer  => 'setScreenName',
+    'is'      => 'rw',
+    'isa'     => 'Trimmed',
+    'coerce'  => 1,
+    'default' => $UNKNOWN,
+    'reader'  => 'getScreenName',
+    'writer'  => 'setScreenName',
 );
 
 has 'thumbnailUrl' => (
-    is      => 'ro',
-    isa     => 'Str',
-    default => $EMPTY,
-    reader  => 'getThumbnailUrl',
-    writer  => 'setThumbnailUrl',
+    'is'      => 'ro',
+    'isa'     => 'Str',
+    'default' => $EMPTY,
+    'reader'  => 'getThumbnailUrl',
+    'writer'  => 'setThumbnailUrl',
 );
 
-around BUILDARGS => sub {
+around 'BUILDARGS' => sub {
     my $orig  = shift;
     my $class = shift;
 
@@ -57,9 +55,9 @@ around BUILDARGS => sub {
     }
     if ( @_ == $MORE_ARGS && !ref $_[0] ) {
         return $class->$orig(
-            loginName    => $_[0],
-            screenName   => $_[1],
-            thumbnailUrl => $_[2],
+            'loginName'    => $_[0],
+            'screenName'   => $_[1],
+            'thumbnailUrl' => $_[2],
         );
     }
     return $class->$orig(@_);
@@ -77,15 +75,13 @@ __END__
 
 =encoding utf8
 
-=for stopwords Roland van Ipenburg plugins login url Readonly
-
 =head1 NAME
 
 WWW::Wookie::User - represent a possible user of a widget
 
 =head1 VERSION
 
-This document describes WWW::Wookie::User version 0.04
+This document describes WWW::Wookie::User version 0.100
 
 =head1 SYNOPSIS
 
@@ -164,10 +160,17 @@ Set the URL for a thumbnail representing this user.
 
 =head1 DEPENDENCIES
 
-L<Moose|Moose>
-L<Moose::Util::TypeConstraints|Moose::Util::TypeConstraints>
-L<Readonly|Readonly>
-L<namespace::autoclean|namespace::autoclean>
+=over 4
+
+=item * L<Moose|Moose>
+
+=item * L<Moose::Util::TypeConstraints|Moose::Util::TypeConstraints>
+
+=item * L<Readonly|Readonly>
+
+=item * L<namespace::autoclean|namespace::autoclean>
+
+=back
 
 =head1 INCOMPATIBILITIES
 
@@ -180,24 +183,37 @@ rt.cpan.org|https://rt.cpan.org/Dist/Display.html?Queue=WWW-Wookie>.
 
 =head1 AUTHOR
 
-Roland van Ipenburg  C<< <ipenburg@xs4all.nl> >>
+Roland van Ipenburg, E<lt>ipenburg@xs4all.nlE<gt>
 
 =head1 LICENSE AND COPYRIGHT
 
-    Copyright 2010 Roland van Ipenburg
+Copyright 2012 by Roland van Ipenburg
 
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-        http://www.apache.org/licenses/LICENSE-2.0
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself, either Perl version 5.14.0 or,
+at your option, any later version of Perl 5 you may have available.
 
 =head1 DISCLAIMER OF WARRANTY
 
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
+BECAUSE THIS SOFTWARE IS LICENSED FREE OF CHARGE, THERE IS NO WARRANTY
+FOR THE SOFTWARE, TO THE EXTENT PERMITTED BY APPLICABLE LAW. EXCEPT WHEN
+OTHERWISE STATED IN WRITING THE COPYRIGHT HOLDERS AND/OR OTHER PARTIES
+PROVIDE THE SOFTWARE "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER
+EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE
+ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE SOFTWARE IS WITH
+YOU. SHOULD THE SOFTWARE PROVE DEFECTIVE, YOU ASSUME THE COST OF ALL
+NECESSARY SERVICING, REPAIR, OR CORRECTION.
+
+IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING
+WILL ANY COPYRIGHT HOLDER, OR ANY OTHER PARTY WHO MAY MODIFY AND/OR
+REDISTRIBUTE THE SOFTWARE AS PERMITTED BY THE ABOVE LICENSE, BE
+LIABLE TO YOU FOR DAMAGES, INCLUDING ANY GENERAL, SPECIAL, INCIDENTAL,
+OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR INABILITY TO USE
+THE SOFTWARE (INCLUDING BUT NOT LIMITED TO LOSS OF DATA OR DATA BEING
+RENDERED INACCURATE OR LOSSES SUSTAINED BY YOU OR THIRD PARTIES OR A
+FAILURE OF THE SOFTWARE TO OPERATE WITH ANY OTHER SOFTWARE), EVEN IF
+SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGES.
 
 =cut

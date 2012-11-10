@@ -3,12 +3,14 @@ use strict;
 use warnings;
 
 use utf8;
-use 5.006000;
+use 5.014000;
 
 our $VERSION = '0.04';
 
 use CGI qw/:all/;
+## no critic qw(ProhibitDebuggingModules)
 use Data::Dumper qw/Dumper/;
+## use critic
 use HTTP::Server::Brick;
 
 use lib q{../lib};
@@ -29,7 +31,7 @@ Readonly::Scalar my $DEMO_PROP       => q{demo_property};
 Readonly::Scalar my $DEMO_VAL        => q{demo_value};
 Readonly::Scalar my $LOCALE          => q{en};
 
-Readonly::Scalar my $STRIP_QUERY => qr{^/\?}sxm;
+Readonly::Scalar my $STRIP_QUERY => qr{^/[?]}sxm;
 
 Readonly::Scalar my $EMPTY           => q{};
 Readonly::Scalar my $ROOT            => q{/};
@@ -46,13 +48,13 @@ Readonly::Array my @GETOPT_CONFIG =>
 Readonly::Array my @GETOPTIONS =>
   ( q{server|s=s}, q{port|p=s}, q{help|h}, q{verbose|v+}, );
 Readonly::Hash my %OPTS_DEFAULT => (
-    server => $WOOKIE_SERVER,
-    port   => $CONNECTOR_PORT,
+    'server' => $WOOKIE_SERVER,
+    'port'   => $CONNECTOR_PORT,
 );
 
 Readonly::Array my @IDS => (
-    { id => q{widget_id},  login => q{demo_2} },
-    { id => q{widget_id2}, login => q{demo_425} },
+    { 'id' => q{widget_id},  'login' => q{demo_2} },
+    { 'id' => q{widget_id2}, 'login' => q{demo_425} },
 );
 ## use critic
 
@@ -60,13 +62,13 @@ Getopt::Long::Configure(@GETOPT_CONFIG);
 my %opts = %OPTS_DEFAULT;
 Getopt::Long::GetOptions( \%opts, @GETOPTIONS ) or Pod::Usage::pod2usage(2);
 
-my $server = HTTP::Server::Brick->new( port => $opts{port} );
+my $server = HTTP::Server::Brick->new( 'port' => $opts{'port'} );
 
 $server->mount(
     $ROOT => {
-        handler  => \&main,
-        wildcard => 1,
-    }
+        'handler'  => \&main,
+        'wildcard' => 1,
+    },
 );
 
 sub main {
@@ -75,7 +77,7 @@ sub main {
     $uri =~ s{$STRIP_QUERY}{}smx;
     my $q = CGI->new($uri);
     my $test =
-      WWW::Wookie::Connector::Service->new( $opts{server}, $API_KEY,
+      WWW::Wookie::Connector::Service->new( $opts{'server'}, $API_KEY,
         $SHARED_DATA_KEY, $USER );
     $test->setLocale($LOCALE);
     $test->getUser->setLoginName($USER);
@@ -88,69 +90,69 @@ sub main {
     }
 
     $res->add_content( $q->start_pre
-          . $q->start_form( { method => $GET, action => $EMPTY } ) );
+          . $q->start_form( { 'method' => $GET, 'action' => $EMPTY } ) );
 
     for my $id (@IDS) {
         my %labels = ( $EMPTY => $NO_WIDGET );
-        foreach my $widget ( @available_widgets ) {
+        foreach my $widget (@available_widgets) {
             $labels{ $widget->getIdentifier } = $widget->getTitle;
         }
         $res->add_content(
             $q->popup_menu(
                 {
-                    name    => $id->{id},
-                    values  => [ keys %labels ],
-                    labels  => \%labels,
-                    default => [ $q->param( $id->{id} ) ],
-                }
-            )
+                    'name'    => $id->{'id'},
+                    'values'  => [ keys %labels ],
+                    'labels'  => \%labels,
+                    'default' => [ $q->param( $id->{'id'} ) ],
+                },
+            ),
         );
     }
 
-    $res->add_content( $q->submit( { value => $SELECT } ) . $q->end_form );
+    $res->add_content( $q->submit( { 'value' => $SELECT } ) . $q->end_form );
 
     for my $id (@IDS) {
-        if ( defined $q->param( $id->{id} )
-            && $q->param( $id->{id} ) ne $EMPTY )
+        if ( defined $q->param( $id->{'id'} )
+            && $q->param( $id->{'id'} ) ne $EMPTY )
         {
-            $test->getUser->setLoginName( $id->{login} );
-            my $widget = $test->getOrCreateInstance( $q->param( $id->{id} ) );
+            $test->getUser->setLoginName( $id->{'login'} );
+            my $widget = $test->getOrCreateInstance( $q->param( $id->{'id'} ) );
             if ($widget) {
                 $res->add_content(
                     $q->start_iframe(
                         {
-                            src    => $widget->getUrl,
-                            width  => $widget->getWidth,
-                            height => $widget->getHeight,
-                        }
+                            'src'    => $widget->getUrl,
+                            'width'  => $widget->getWidth,
+                            'height' => $widget->getHeight,
+                        },
                       )
                       . $q->end_iframe
-                      . $q->br
+                      . $q->br,
                 );
                 $test->addParticipant( $widget,
-                    WWW::Wookie::User->new( $id->{login}, $id->{login} ) );
+                    WWW::Wookie::User->new( $id->{'login'}, $id->{'login'} ) );
                 $res->add_content(
                     $q->escapeHTML(
-                        Data::Dumper::Dumper $test->getUsers($widget)
-                    )
+                        Data::Dumper::Dumper $test->getUsers($widget),
+                    ),
                 );
 
                 ( $id != $IDS[0] ) && next;
                 $test->deleteParticipant( $widget,
-                    WWW::Wookie::User->new( $id->{login}, $id->{login} ) );
+                    WWW::Wookie::User->new( $id->{'login'}, $id->{'login'} ) );
                 $res->add_content(
                         $USERS_AFTER_DEL
                       . $q->br
                       . $q->escapeHTML(
-                        Data::Dumper::Dumper $test->getUsers($widget)
-                      ) .
-                      $q->escapeHTML(
+                        Data::Dumper::Dumper $test->getUsers($widget),
+                      )
+                      . $q->escapeHTML(
                         Data::Dumper::Dumper $test->setProperty(
                             $widget,
                             WWW::Wookie::Widget::Property->new(
-                                $DEMO_PROP, $DEMO_VAL
-                            )
-                        )
+                                $DEMO_PROP, $DEMO_VAL,
+                            ),
+                        ),
                       )
                       . $PROPS_AFTER_DEL
                       . $q->br
@@ -158,12 +160,12 @@ sub main {
                         $q->escapeHTML(
                             Data::Dumper::Dumper $test->deleteProperty(
                                 $widget,
-                                WWW::Wookie::Widget::Property->new($DEMO_PROP)
-                            )
+                                WWW::Wookie::Widget::Property->new($DEMO_PROP),
+                            ),
                           )
                           || $EMPTY
                       )
-                      . $q->br
+                      . $q->br,
                 );
             }
         }
@@ -223,15 +225,27 @@ C<localhost>, default port 8081
 
 =head1 DEPENDENCIES
 
-L<CGI|CGI>
-L<Data::Dumper|Data::Dumper>
-L<Getopt::Long|Getopt::Long>
-L<HTTP::Server::Brick|HTTP::Server::Brick>
-L<Pod::Usage|Pod::Usage>
-L<Readonly|Readonly>
-L<WWW::Wookie::Connector::Service|WWW::Wookie::Connector::Service>
-L<WWW::Wookie::User|WWW::Wookie::User>
-L<WWW::Wookie::Widget::Property|WWW::Wookie::Widget::Property>
+=over 4
+
+=item * L<CGI|CGI>
+
+=item * L<Data::Dumper|Data::Dumper>
+
+=item * L<Getopt::Long|Getopt::Long>
+
+=item * L<HTTP::Server::Brick|HTTP::Server::Brick>
+
+=item * L<Pod::Usage|Pod::Usage>
+
+=item * L<Readonly|Readonly>
+
+=item * L<WWW::Wookie::Connector::Service|WWW::Wookie::Connector::Service>
+
+=item * L<WWW::Wookie::User|WWW::Wookie::User>
+
+=item * L<WWW::Wookie::Widget::Property|WWW::Wookie::Widget::Property>
+
+=back
 
 =head1 INCOMPATIBILITIES
 
@@ -242,7 +256,7 @@ L<WWW::Wookie::Widget::Property|WWW::Wookie::Widget::Property>
 This starts an HTTP service which presents an HTML page that interacts with an
 Apache Wookie (Incubating) Server using a Perl implementation of the Apache
 Wookie (Incubating) Connector Framework.  For more information see:
-L<http://incubator.apache.org/wookie/embedding-wookie-widgets-in-other-applications.html|http://incubator.apache.org/wookie/embedding-wookie-widgets-in-other-applications.html>
+L<http://incubator.apache.org/wookie/docs/embedding.html|http://incubator.apache.org/wookie/docs/embedding.html>
 
 =head1 CONFIGURATION AND ENVIRONMENT
 
@@ -251,24 +265,37 @@ connect to an Apache Wookie (Incubating) service on C<localhost> port 8080.
 
 =head1 AUTHOR
 
-Roland van Ipenburg  C<< <ipenburg@xs4all.nl> >>
+Roland van Ipenburg, E<lt>ipenburg@xs4all.nlE<gt>
 
 =head1 LICENSE AND COPYRIGHT
 
-    Copyright 2010 Roland van Ipenburg
+Copyright 2012 by Roland van Ipenburg
 
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-        http://www.apache.org/licenses/LICENSE-2.0
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself, either Perl version 5.14.0 or,
+at your option, any later version of Perl 5 you may have available.
 
 =head1 DISCLAIMER OF WARRANTY
 
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
+BECAUSE THIS SOFTWARE IS LICENSED FREE OF CHARGE, THERE IS NO WARRANTY
+FOR THE SOFTWARE, TO THE EXTENT PERMITTED BY APPLICABLE LAW. EXCEPT WHEN
+OTHERWISE STATED IN WRITING THE COPYRIGHT HOLDERS AND/OR OTHER PARTIES
+PROVIDE THE SOFTWARE "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER
+EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE
+ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE SOFTWARE IS WITH
+YOU. SHOULD THE SOFTWARE PROVE DEFECTIVE, YOU ASSUME THE COST OF ALL
+NECESSARY SERVICING, REPAIR, OR CORRECTION.
+
+IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING
+WILL ANY COPYRIGHT HOLDER, OR ANY OTHER PARTY WHO MAY MODIFY AND/OR
+REDISTRIBUTE THE SOFTWARE AS PERMITTED BY THE ABOVE LICENSE, BE
+LIABLE TO YOU FOR DAMAGES, INCLUDING ANY GENERAL, SPECIAL, INCIDENTAL,
+OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR INABILITY TO USE
+THE SOFTWARE (INCLUDING BUT NOT LIMITED TO LOSS OF DATA OR DATA BEING
+RENDERED INACCURATE OR LOSSES SUSTAINED BY YOU OR THIRD PARTIES OR A
+FAILURE OF THE SOFTWARE TO OPERATE WITH ANY OTHER SOFTWARE), EVEN IF
+SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGES.
 
 =cut

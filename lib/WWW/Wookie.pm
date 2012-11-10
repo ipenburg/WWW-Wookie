@@ -1,11 +1,9 @@
-package WWW::Wookie;    # -*- cperl; cperl-indent-level: 4 -*-
+package WWW::Wookie 0.100;    # -*- cperl; cperl-indent-level: 4 -*-
 use strict;
 use warnings;
 
 use utf8;
-use 5.006000;
-
-our $VERSION = '0.04';
+use 5.014000;
 
 1;
 
@@ -13,15 +11,13 @@ __END__
 
 =encoding utf8
 
-=for stopwords Roland van Ipenburg Wookie Readonly PHP URI
-
 =head1 NAME
 
 WWW::Wookie - Apache Wookie (Incubating) Connector Framework implementation
 
 =head1 VERSION
 
-This document describes WWW::Wookie version 0.04
+This document describes WWW::Wookie version 0.100
 
 =head1 SYNOPSIS
 
@@ -36,7 +32,7 @@ This document describes WWW::Wookie version 0.04
 
 This is a Perl implementation of the Wookie Connector Framework. For more
 information see:
-L<http://incubator.apache.org/wookie/embedding-wookie-widgets-in-other-applications.html|http://incubator.apache.org/wookie/embedding-wookie-widgets-in-other-applications.html>
+L<http://incubator.apache.org/wookie/docs/embedding.html|http://incubator.apache.org/wookie/docs/embedding.html>
 
 =head1 SUBROUTINES/METHODS
 
@@ -47,25 +43,47 @@ L<http://incubator.apache.org/wookie|http://incubator.apache.org/wookie>.
 
 =head1 DEPENDENCIES
 
-L<Exception::Class|Exception::Class>
-L<HTTP::Headers|HTTP::Headers>
-L<HTTP::Request|HTTP::Request>
-L<HTTP::Request::Common|HTTP::Request::Common>
-L<HTTP::Status|HTTP::Status>
-L<LWP::UserAgent|LWP::UserAgent>
-L<Log::Log4perl|Log::Log4perl>
-L<Moose|Moose>
-L<Moose::Role|Moose::Role>
-L<Moose::Util::TypeConstraints|Moose::Util::TypeConstraints>
-L<MooseX::AttributeHelpers|MooseX::AttributeHelpers>
-L<Readonly|Readonly>
-L<Regexp::Common|Regexp::Common>
-L<URI|URI>
-L<URI::Escape|URI::Escape>
-L<XML::Simple|XML::Simple>
-L<namespace::autoclean|namespace::autoclean>
-L<Test::More|Test::More>
-L<Test::NoWarnings|Test::NoWarnings>
+=over 4
+
+=item * L<Exception::Class|Exception::Class>
+
+=item * L<HTTP::Headers|HTTP::Headers>
+
+=item * L<HTTP::Request|HTTP::Request>
+
+=item * L<HTTP::Request::Common|HTTP::Request::Common>
+
+=item * L<HTTP::Status|HTTP::Status>
+
+=item * L<LWP::UserAgent|LWP::UserAgent>
+
+=item * L<Log::Log4perl|Log::Log4perl>
+
+=item * L<Moose|Moose>
+
+=item * L<Moose::Role|Moose::Role>
+
+=item * L<Moose::Util::TypeConstraints|Moose::Util::TypeConstraints>
+
+=item * L<MooseX::AttributeHelpers|MooseX::AttributeHelpers>
+
+=item * L<Readonly|Readonly>
+
+=item * L<Regexp::Common|Regexp::Common>
+
+=item * L<URI|URI>
+
+=item * L<URI::Escape|URI::Escape>
+
+=item * L<XML::Simple|XML::Simple>
+
+=item * L<namespace::autoclean|namespace::autoclean>
+
+=item * L<Test::More|Test::More>
+
+=item * L<Test::NoWarnings|Test::NoWarnings>
+
+=back
 
 =head1 INCOMPATIBILITIES
 
@@ -83,24 +101,37 @@ rt.cpan.org|https://rt.cpan.org/Dist/Display.html?Queue=WWW-Wookie>.
 
 =head1 AUTHOR
 
-Roland van Ipenburg  C<< <ipenburg@xs4all.nl> >>
+Roland van Ipenburg, E<lt>ipenburg@xs4all.nlE<gt>
 
 =head1 LICENSE AND COPYRIGHT
 
-    Copyright 2010 Roland van Ipenburg
+Copyright 2012 by Roland van Ipenburg
 
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-        http://www.apache.org/licenses/LICENSE-2.0
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself, either Perl version 5.14.0 or,
+at your option, any later version of Perl 5 you may have available.
 
 =head1 DISCLAIMER OF WARRANTY
 
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
+BECAUSE THIS SOFTWARE IS LICENSED FREE OF CHARGE, THERE IS NO WARRANTY
+FOR THE SOFTWARE, TO THE EXTENT PERMITTED BY APPLICABLE LAW. EXCEPT WHEN
+OTHERWISE STATED IN WRITING THE COPYRIGHT HOLDERS AND/OR OTHER PARTIES
+PROVIDE THE SOFTWARE "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER
+EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE
+ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE SOFTWARE IS WITH
+YOU. SHOULD THE SOFTWARE PROVE DEFECTIVE, YOU ASSUME THE COST OF ALL
+NECESSARY SERVICING, REPAIR, OR CORRECTION.
+
+IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING
+WILL ANY COPYRIGHT HOLDER, OR ANY OTHER PARTY WHO MAY MODIFY AND/OR
+REDISTRIBUTE THE SOFTWARE AS PERMITTED BY THE ABOVE LICENSE, BE
+LIABLE TO YOU FOR DAMAGES, INCLUDING ANY GENERAL, SPECIAL, INCIDENTAL,
+OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR INABILITY TO USE
+THE SOFTWARE (INCLUDING BUT NOT LIMITED TO LOSS OF DATA OR DATA BEING
+RENDERED INACCURATE OR LOSSES SUSTAINED BY YOU OR THIRD PARTIES OR A
+FAILURE OF THE SOFTWARE TO OPERATE WITH ANY OTHER SOFTWARE), EVEN IF
+SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGES.
 
 =cut
