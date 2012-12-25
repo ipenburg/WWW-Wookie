@@ -69,7 +69,7 @@ sub test {
         my $response = $ua->get( $url . $ADVERTISE );
         if ( $response->is_success ) {
             my $xml_obj =
-              XML::Simple->new( 'ForceArray' => 1, 'KeyAttr' => 'identifier' )
+              XML::Simple->new( 'ForceArray' => 1, 'KeyAttr' => 'id' )
               ->XMLin( $response->content );
             if ( exists $xml_obj->{'widget'} ) {
                 return 1;

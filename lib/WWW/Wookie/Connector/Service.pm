@@ -10,7 +10,7 @@ use Exception::Class;
 use HTTP::Headers;
 use HTTP::Request;
 use HTTP::Request::Common;
-use HTTP::Status qw(HTTP_CREATED HTTP_OK HTTP_UNAUTHORIZED);
+use HTTP::Status qw(HTTP_CREATED HTTP_OK HTTP_UNAUTHORIZED HTTP_FORBIDDEN);
 use LWP::UserAgent qw/POST/;
 use Log::Log4perl qw(:easy get_logger);
 use Moose qw/around has with/;
@@ -128,7 +128,7 @@ sub getAvailableServices {
     my $response = $self->_do_request( $url, $content, $GET );
     my $xml_obj  = XML::Simple->new(
         'ForceArray' => 1,
-        'KeyAttr'    => { 'widget' => q{identifier}, 'service' => q{name} },
+        'KeyAttr'    => { 'widget' => q{id}, 'service' => q{name} },
     )->XMLin( $response->content );
     while ( my ( $name, $value ) = each %{ $xml_obj->{'service'} } ) {
         $self->getLogger->debug($name);
@@ -163,7 +163,7 @@ sub getAvailableWidgets {
 
     my $response = $self->_do_request( $url, $content, $GET );
     my $xml_obj =
-      XML::Simple->new( 'ForceArray' => 1, 'KeyAttr' => 'identifier' )
+      XML::Simple->new( 'ForceArray' => 1, 'KeyAttr' => 'id' )
       ->XMLin( $response->content );
     while ( my ( $id, $value ) = each %{ $xml_obj->{'widget'} } ) {
         $widgets{$id} =
@@ -222,7 +222,7 @@ sub getWidget {
     #__check_url($url, $ERR{'MALFORMED_URL'});
 
     #my $response = $self->_do_request( $url, {}, $GET );
-    #my $xs = XML::Simple->new( 'ForceArray' => 1, 'KeyAttr' => 'identifier' );
+    #my $xs = XML::Simple->new( 'ForceArray' => 1, 'KeyAttr' => 'id' );
     #my $xml_obj = $xs->XMLin( $response->content );
     #return WWW::Wookie::Widget->new( $widget_id,
     #    $self->_parse_widget($xml_obj) );
@@ -238,8 +238,7 @@ sub getOrCreateInstance {
         $guid = $widget_or_guid->getIdentifier;
     }
     my $result = eval {
-        if ( defined $guid && $guid eq $EMPTY )
-        {
+        if ( defined $guid && $guid eq $EMPTY ) {
             ## no critic qw(RequireExplicitInclusion)
             WookieConnectorException->throw(
                 'error' => $ERR{'NO_WIDGET_GUID'} );
@@ -255,12 +254,7 @@ sub getOrCreateInstance {
         if ( $response->code == HTTP_CREATED ) {
             $response = $self->_do_request( $url, $content );
         }
-        if ( $response->code == HTTP_UNAUTHORIZED ) {
-            ## no critic qw(RequireExplicitInclusion)
-            WookieConnectorException->throw(
-                'error' => $ERR{'INVALID_API_KEY'} );
-            ## use critic
-        }
+
         my $instance = $self->_parse_instance( $guid, $response->content );
         if ($instance) {
             $self->WidgetInstances->put($instance);
@@ -298,17 +292,14 @@ sub getUsers {
         __throw_http_err($response);
     }
     my $xml_obj =
-      XML::Simple->new( 'ForceArray' => 1, 'KeyAttr' => 'identifier' )
+      XML::Simple->new( 'ForceArray' => 1, 'KeyAttr' => 'id' )
       ->XMLin( $response->content );
     my @users = ();
-    for my $participant ( @{ $xml_obj->{'participant'} } ) {
-        my $id            = $participant->{'id'};
-        my $name          = $participant->{'displayName'};
-        my $thumbnail_url = $participant->{'thumbnail_url'};
-        my $new_user      = WWW::Wookie::User->new(
+    while ( my ( $id, $value ) = each %{ $xml_obj->{'participant'} } ) {
+        my $new_user = WWW::Wookie::User->new(
             $id,
-            defined $name          || $id,
-            defined $thumbnail_url || $EMPTY,
+            defined $value->{'displayName'}   || $id,
+            defined $value->{'thumbnail_url'} || $EMPTY,
         );
         push @users, $new_user;
     }
@@ -610,14 +601,20 @@ sub _do_request {
     );
     my $response = $self->_ua->request($request);
     $self->getLogger->debug( sprintf $LOG{'RESPONSE_CODE'}, $response->code );
+    if (   $response->code == HTTP_UNAUTHORIZED
+        || $response->code == HTTP_FORBIDDEN )
+    {
+        ## no critic qw(RequireExplicitInclusion)
+        WookieConnectorException->throw( 'error' => $ERR{'INVALID_API_KEY'} );
+        ## use critic
+    }
     return $response;
 }
 
 sub _parse_instance {
     my ( $self, $guid, $xml ) = @_;
     my $xml_obj =
-      XML::Simple->new( 'ForceArray' => 1, 'KeyAttr' => 'identifier' )
-      ->XMLin($xml);
+      XML::Simple->new( 'ForceArray' => 1, 'KeyAttr' => 'id' )->XMLin($xml);
     if (
         my $instance = WWW::Wookie::Widget::Instance->new(
             $xml_obj->{'url'}[0],   $guid,
@@ -635,7 +632,7 @@ sub _parse_instance {
 
 sub _parse_widget {
     my ( $self, $xml ) = @_;
-    my $title = $xml->{'title'}[0]->{'content'};
+    my $title = $xml->{'name'}[0]->{'content'};
     my $description =
       ref $xml->{'description'}[0]
       ? $xml->{'description'}[0]->{'content'}
