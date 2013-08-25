@@ -7,6 +7,8 @@ use 5.014000;
 
 our $VERSION = '0.04';
 
+use lib qw(./lib ../lib);
+
 use CGI qw/:all/;
 ## no critic qw(ProhibitDebuggingModules)
 use Data::Dumper qw/Dumper/;
@@ -190,8 +192,8 @@ __END__
 
 =head1 NAME
 
-TestWookieService.pl - HTTP server for testing the Apache Wookie (Incubating)
-Connector Framework Perl implementation
+TestWookieService.pl - HTTP server for testing the Apache Wookie Connector
+Framework Perl implementation
 
 =head1 VERSION
 
@@ -254,14 +256,14 @@ C<localhost>, default port 8081
 =head1 DESCRIPTION
 
 This starts an HTTP service which presents an HTML page that interacts with an
-Apache Wookie (Incubating) Server using a Perl implementation of the Apache
-Wookie (Incubating) Connector Framework.  For more information see:
-L<http://incubator.apache.org/wookie/docs/embedding.html|http://incubator.apache.org/wookie/docs/embedding.html>
+Apache Wookie Server using a Perl implementation of the Apache Wookie
+Connector Framework.  For more information see:
+L<http://wookie.apache.org|http://wookie.apache.org>
 
 =head1 CONFIGURATION AND ENVIRONMENT
 
 Using the defaults it starts the HTTP service on port 8081 and tries to
-connect to an Apache Wookie (Incubating) service on C<localhost> port 8080.
+connect to an Apache Wookie service on C<localhost> port 8080.
 
 =head1 AUTHOR
 

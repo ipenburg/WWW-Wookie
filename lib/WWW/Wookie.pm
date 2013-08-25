@@ -15,7 +15,7 @@ __END__
 
 =head1 NAME
 
-WWW::Wookie - Apache Wookie (Incubating) Connector Framework implementation
+WWW::Wookie - Apache Wookie Connector Framework implementation
 
 =head1 VERSION
 
@@ -33,15 +33,14 @@ This document describes WWW::Wookie version 0.100
 =head1 DESCRIPTION
 
 This is a Perl implementation of the Wookie Connector Framework. For more
-information see:
-L<http://incubator.apache.org/wookie/docs/embedding.html|http://incubator.apache.org/wookie/docs/embedding.html>
+information see: L<http://wookie.apache.org|http://wookie.apache.org>
 
 =head1 SUBROUTINES/METHODS
 
 =head1 CONFIGURATION AND ENVIRONMENT
 
 The Wookie Connector Framework is supposed to connect to a Wookie server, see
-L<http://incubator.apache.org/wookie|http://incubator.apache.org/wookie>.
+L<http://wookie.apache.org|http://wookie.apache.org>.
 
 =head1 DEPENDENCIES
 
