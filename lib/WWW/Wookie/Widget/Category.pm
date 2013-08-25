@@ -7,7 +7,6 @@ use utf8;
 use 5.014000;
 
 use Moose qw/around has/;
-use MooseX::AttributeHelpers;
 use namespace::autoclean '-except' => 'meta', '-also' => qr/^_/sxm;
 
 has '_name' => (
@@ -17,7 +16,7 @@ has '_name' => (
 );
 
 has '_widgets' => (
-    'metaclass' => 'Collection::Hash',
+    'traits'    => ['Hash'],
     'is'        => 'rw',
     'isa'       => 'HashRef[WWW::Wookie::Widget]',
     'default'   => sub { {} },
@@ -106,8 +105,6 @@ Adds a L<WWW::Wookie::Widget|WWW::Wookie::Widget> object to this service.
 =over 4
 
 =item * L<Moose|Moose>
-
-=item * L<MooseX::AttributeHelpers|MooseX::AttributeHelpers>
 
 =item * L<namespace::autoclean|namespace::autoclean>
 

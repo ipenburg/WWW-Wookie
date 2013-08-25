@@ -28,7 +28,6 @@ This module requires these other modules and libraries:
     Moose
     Moose::Role
     Moose::Util::TypeConstraints
-    MooseX::AttributeHelpers
     Readonly
     Regexp::Common
     URI

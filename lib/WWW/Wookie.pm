@@ -65,8 +65,6 @@ L<http://incubator.apache.org/wookie|http://incubator.apache.org/wookie>.
 
 =item * L<Moose::Util::TypeConstraints|Moose::Util::TypeConstraints>
 
-=item * L<MooseX::AttributeHelpers|MooseX::AttributeHelpers>
-
 =item * L<Readonly|Readonly>
 
 =item * L<Regexp::Common|Regexp::Common>

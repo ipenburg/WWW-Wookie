@@ -17,7 +17,6 @@ Module::Build->new(
         'Moose'                        => 0,
         'Moose::Role'                  => 0,
         'Moose::Util::TypeConstraints' => 0,
-        'MooseX::AttributeHelpers'     => 0,
         'Readonly'                     => 0,
         'Regexp::Common'               => 0,
         'URI'                          => 0,

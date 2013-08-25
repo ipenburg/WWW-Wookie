@@ -14,7 +14,6 @@ use HTTP::Status qw(HTTP_CREATED HTTP_OK HTTP_UNAUTHORIZED HTTP_FORBIDDEN);
 use LWP::UserAgent qw/POST/;
 use Log::Log4perl qw(:easy get_logger);
 use Moose qw/around has with/;
-use MooseX::AttributeHelpers;
 use Regexp::Common qw(URI);
 use URI::Escape qw(uri_escape);
 use XML::Simple;
@@ -906,8 +905,6 @@ Get the current locale setting. Returns current locale as string.
 =item * L<Moose|Moose>
 
 =item * L<Moose::Util::TypeConstraints|Moose::Util::TypeConstraints>
-
-=item * L<MooseX::AttributeHelpers|MooseX::AttributeHelpers>
 
 =item * L<Readonly|Readonly>
 

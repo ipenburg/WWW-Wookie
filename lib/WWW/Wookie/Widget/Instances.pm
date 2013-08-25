@@ -7,13 +7,12 @@ use utf8;
 use 5.014000;
 
 use Moose qw/around has/;
-use MooseX::AttributeHelpers;
 use namespace::autoclean '-except' => 'meta', '-also' => qr/^_/sxm;
 
 use WWW::Wookie::Widget::Instance;
 
 has '_instances' => (
-    'metaclass' => 'Collection::Hash',
+    'traits'    => ['Hash'],
     'is'        => 'rw',
     'isa'       => 'HashRef[WWW::Wookie::Widget::Instance]',
     'default'   => sub { {} },
@@ -86,8 +85,6 @@ Get all Widget instances. Returns an array of widget instances.
 =over 4
 
 =item * L<Moose|Moose>
-
-=item * L<MooseX::AttributeHelpers|MooseX::AttributeHelpers>
 
 =item * L<WWW::Wookie::Widget::Instance|WWW::Wookie::Widget::Instance>
 
