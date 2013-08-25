@@ -103,7 +103,7 @@ sub main {
             $q->popup_menu(
                 {
                     'name'    => $id->{'id'},
-                    'values'  => [ keys %labels ],
+                    'values'  => [ sort keys %labels ],
                     'labels'  => \%labels,
                     'default' => [ $q->param( $id->{'id'} ) ],
                 },
@@ -197,7 +197,7 @@ Framework Perl implementation
 
 =head1 VERSION
 
-This document describes C<TestWookieService.pl> version 0.04
+This document describes C<TestWookieService.pl> version 0.100
 
 =head1 USAGE
 
