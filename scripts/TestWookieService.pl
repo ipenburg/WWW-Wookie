@@ -188,7 +188,6 @@ __END__
 
 =for stopwords CGI Readonly Ipenburg Wookie TestWookieService.pl MERCHANTABILITY
 
-
 =head1 NAME
 
 TestWookieService.pl - HTTP server for testing the Apache Wookie (Incubating)
@@ -270,7 +269,7 @@ Roland van Ipenburg, E<lt>ipenburg@xs4all.nlE<gt>
 
 =head1 LICENSE AND COPYRIGHT
 
-Copyright 2012 by Roland van Ipenburg
+Copyright 2013 by Roland van Ipenburg
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself, either Perl version 5.14.0 or,
