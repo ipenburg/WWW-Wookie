@@ -186,7 +186,8 @@ __END__
 
 =encoding utf8
 
-=for stopwords Roland van Ipenburg Wookie TestWookieService.pl
+=for stopwords CGI Readonly Ipenburg Wookie TestWookieService.pl MERCHANTABILITY
+
 
 =head1 NAME
 

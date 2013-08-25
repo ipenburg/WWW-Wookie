@@ -12,10 +12,10 @@ use namespace::autoclean '-except' => 'meta', '-also' => qr/^_/sxm;
 use WWW::Wookie::Widget::Instance;
 
 has '_instances' => (
-    'traits'    => ['Hash'],
-    'is'        => 'rw',
-    'isa'       => 'HashRef[WWW::Wookie::Widget::Instance]',
-    'default'   => sub { {} },
+    'traits'  => ['Hash'],
+    'is'      => 'rw',
+    'isa'     => 'HashRef[WWW::Wookie::Widget::Instance]',
+    'default' => sub { {} },
 );
 
 sub put {
@@ -40,6 +40,8 @@ __PACKAGE__->meta->make_immutable;
 __END__
 
 =encoding utf8
+
+=for stopwords Ipenburg MERCHANTABILITY
 
 =head1 NAME
 

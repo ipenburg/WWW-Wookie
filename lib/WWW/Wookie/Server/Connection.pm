@@ -106,6 +106,8 @@ __END__
 
 =encoding utf8
 
+=for stopwords Wookie API Readonly URI Ipenburg MERCHANTABILITY
+
 =head1 NAME
 
 WWW::Wookie::Server::Connection - A connection to a Wookie server

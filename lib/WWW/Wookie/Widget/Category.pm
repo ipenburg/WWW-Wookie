@@ -16,10 +16,10 @@ has '_name' => (
 );
 
 has '_widgets' => (
-    'traits'    => ['Hash'],
-    'is'        => 'rw',
-    'isa'       => 'HashRef[WWW::Wookie::Widget]',
-    'default'   => sub { {} },
+    'traits'  => ['Hash'],
+    'is'      => 'rw',
+    'isa'     => 'HashRef[WWW::Wookie::Widget]',
+    'default' => sub { {} },
 );
 
 sub put {
@@ -55,6 +55,8 @@ __PACKAGE__->meta->make_immutable;
 __END__
 
 =encoding utf8
+
+=for stopwords Ipenburg MERCHANTABILITY
 
 =head1 NAME
 

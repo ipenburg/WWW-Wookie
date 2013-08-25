@@ -287,8 +287,8 @@ is(
 
 # Skipping hard to trap HTTP response code exception.
 
-my $msg = 'Author test. Set $ENV{TEST_AUTHOR} to a true value to run.';
+my $msg = 'Author test. Set $ENV{AUTHOR_TESTING} to a true value to run.';
 SKIP: {
-    skip $msg, 1 unless $ENV{TEST_AUTHOR};
+    skip $msg, 1 unless $ENV{AUTHOR_TESTING};
 }
-$ENV{TEST_AUTHOR} && Test::NoWarnings::had_no_warnings();
+$ENV{AUTHOR_TESTING} && Test::NoWarnings::had_no_warnings();

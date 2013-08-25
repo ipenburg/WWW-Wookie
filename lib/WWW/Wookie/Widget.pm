@@ -63,6 +63,8 @@ __END__
 
 =encoding utf8
 
+=for stopwords url guid Readonly Ipenburg MERCHANTABILITY
+
 =head1 NAME
 
 WWW::Wookie::Widget - A client side representation of a widget

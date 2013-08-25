@@ -660,6 +660,8 @@ __END__
 
 =encoding utf8
 
+=for stopwords API Readonly Wookie guid Ipenburg login MERCHANTABILITY
+
 =head1 NAME
 
 WWW::Wookie::Connector::Service - Wookie connector service, handles all the

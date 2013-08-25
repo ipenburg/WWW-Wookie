@@ -11,6 +11,8 @@ __END__
 
 =encoding utf8
 
+=for stopwords Wookie Readonly URI PHP Ipenburg MERCHANTABILITY
+
 =head1 NAME
 
 WWW::Wookie - Apache Wookie (Incubating) Connector Framework implementation

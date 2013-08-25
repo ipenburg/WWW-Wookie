@@ -3,9 +3,9 @@ use warnings;
 use English;
 use Test::More;
 
-if ( not $ENV{TEST_AUTHOR} ) {
+if ( not $ENV{AUTHOR_TESTING} ) {
     my $msg =
-'Author test. Set the environment variable TEST_AUTHOR to enable this test.';
+'Author test. Set the environment variable AUTHOR_TESTING to enable this test.';
     plan( skip_all => $msg );
 }
 
@@ -16,21 +16,4 @@ if ($EVAL_ERROR) {
     plan( skip_all => $msg );
 }
 
-Test::Spelling::add_stopwords(<DATA>);
 Test::Spelling::all_pod_files_spelling_ok();
-__DATA__
-Ipenburg
-RT
-cpan
-guid
-org
-rt
-wookie
-Readonly
-URL
-URI
-API
-url
-plugins
-PHP
-CGI

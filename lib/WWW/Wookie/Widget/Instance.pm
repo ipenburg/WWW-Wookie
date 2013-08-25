@@ -78,6 +78,8 @@ __END__
 
 =encoding utf8
 
+=for stopwords Url Guid url guid Readonly Ipenburg MERCHANTABILITY
+
 =head1 NAME
 
 WWW::Wookie::Widget::Instance - An instance of a widget for use on the client

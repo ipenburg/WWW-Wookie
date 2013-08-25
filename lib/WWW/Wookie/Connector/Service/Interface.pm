@@ -32,6 +32,8 @@ __END__
 
 =encoding utf8
 
+=for stopwords Wookie guid Ipenburg MERCHANTABILITY
+
 =head1 NAME
 
 WWW::Wookie::Connector::Service::Interface - Interface for

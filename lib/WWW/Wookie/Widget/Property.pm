@@ -67,6 +67,8 @@ __END__
 
 =encoding utf8
 
+=for stopwords boolean Readonly Ipenburg MERCHANTABILITY
+
 =head1 NAME
 
 WWW::Wookie::Widget::Property - Property class

@@ -75,6 +75,8 @@ __END__
 
 =encoding utf8
 
+=for stopwords url Readonly Ipenburg login MERCHANTABILITY
+
 =head1 NAME
 
 WWW::Wookie::User - represent a possible user of a widget
