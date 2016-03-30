@@ -188,11 +188,11 @@ __END__
 
 =encoding utf8
 
-=for stopwords CGI Readonly Ipenburg Wookie TestWookieService.pl MERCHANTABILITY
+=for stopwords CGI Readonly Ipenburg Wookie MERCHANTABILITY
 
 =head1 NAME
 
-TestWookieService.pl - HTTP server for testing the Apache Wookie Connector
+C<TestWookieService.pl> - HTTP server for testing the Apache Wookie Connector
 Framework Perl implementation
 
 =head1 VERSION
