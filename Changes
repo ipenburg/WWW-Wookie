@@ -1,7 +1,8 @@
 Revision history for Perl extension WWW::Wookie.
 
-0.100 Sun Aug 25 11:21:37 UTC 2013
+0.100 Fri Apr 1 20:43:37 UTC 2016
     - independent from MooseX::AttributeHelpers
+    - minimum perl version required 5.20 (mainly due to Readonly having that)
 
 0.03  Thu Nov  25 02:18:04 2010
     - overloaded stringification of a server connection

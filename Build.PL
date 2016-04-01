@@ -6,7 +6,7 @@ Module::Build->new(
     license     => 'perl',
     dist_author => 'Roland van Ipenburg <ipenburg@xs4all.nl>',
     requires    => {
-        'perl'                         => '5.14.0',
+        'perl'                         => '5.20.0',
         'Exception::Class'             => 0,
         'HTTP::Headers'                => 0,
         'HTTP::Request'                => 0,

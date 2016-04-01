@@ -3,7 +3,7 @@ use strict;
 use warnings;
 
 use utf8;
-use 5.014000;
+use 5.020000;
 
 use Moose qw/around has/;
 use Moose::Util::TypeConstraints qw/as coerce from where subtype via/;
@@ -18,7 +18,7 @@ Readonly::Scalar my $MORE_ARGS => 3;
 
 subtype 'Trimmed' => as 'Str' => where { m{(^$|(^\S|\S$))}gsmx };
 
-coerce 'Trimmed' => from 'Str' => via { $_ =~ s{^\s+(.*)\s+$}{$1}gsmx; $_ };
+coerce 'Trimmed' => from 'Str' => via { s{^\s+(.*)\s+$}{$1}gsmx; $_ };
 
 has 'loginName' => (
     'is'      => 'rw',
@@ -50,7 +50,7 @@ around 'BUILDARGS' => sub {
     my $orig  = shift;
     my $class = shift;
 
-    if ( @_ == 2 && !ref $_[0] ) {
+    if ( 2 == @_ && !ref $_[0] ) {
         push @_, $EMPTY;
     }
     if ( @_ == $MORE_ARGS && !ref $_[0] ) {
@@ -65,9 +65,7 @@ around 'BUILDARGS' => sub {
 
 no Moose;
 
-## no critic qw(RequireExplicitInclusion)
 __PACKAGE__->meta->make_immutable;
-## use critic
 
 1;
 
@@ -189,7 +187,7 @@ Roland van Ipenburg, E<lt>ipenburg@xs4all.nlE<gt>
 
 =head1 LICENSE AND COPYRIGHT
 
-Copyright 2013 by Roland van Ipenburg
+Copyright 2016 by Roland van Ipenburg
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself, either Perl version 5.14.0 or,

@@ -32,3 +32,5 @@ t/14_kwalitee.t
 t/15_spell.t
 t/perlcriticrc
 t/rt.t
+META.yml
+META.json

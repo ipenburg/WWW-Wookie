@@ -3,7 +3,7 @@ use strict;
 use warnings;
 
 use utf8;
-use 5.014000;
+use 5.020000;
 
 use Moose qw/around has/;
 
@@ -53,9 +53,7 @@ around 'BUILDARGS' => sub {
 };
 no Moose;
 
-## no critic qw(RequireExplicitInclusion)
 __PACKAGE__->meta->make_immutable;
-## use critic
 
 1;
 

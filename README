@@ -1,4 +1,4 @@
-WWW::Wookie version 0.03
+WWW::Wookie version 0.100
 =======================================================
 
 This is a Perl implementation of the Wookie Connector Framework. It is intended
@@ -9,10 +9,10 @@ INSTALLATION
 
 To install this module type the following:
 
-   perl Makefile.PL
-   make
-   make test
-   make install
+   perl Build.PL
+   ./Build
+   ./Build test
+   ./Build install
 
 DEPENDENCIES
 
@@ -40,7 +40,7 @@ This module requires these other modules and libraries:
 
 COPYRIGHT AND LICENCE
 
-Copyright 2010 Roland van Ipenburg
+Copyright 2016 Roland van Ipenburg
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
