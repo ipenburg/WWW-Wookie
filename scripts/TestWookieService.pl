@@ -188,7 +188,7 @@ __END__
 
 =encoding utf8
 
-=for stopwords CGI Readonly TestWookieService Ipenburg Wookie MERCHANTABILITY
+=for stopwords CGI Readonly TestWookieService.pl Ipenburg Wookie MERCHANTABILITY
 
 =head1 NAME
 
