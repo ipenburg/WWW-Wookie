@@ -1,10 +1,10 @@
 # -*- cperl; cperl-indent-level: 4 -*-
-package WWW::Wookie::Connector::Exceptions 0.100;
+package WWW::Wookie::Connector::Exceptions 0.101;
 use strict;
 use warnings;
 
 use utf8;
-use 5.014000;
+use 5.020000;
 
 use Exception::Class qw(
   WookieConnectorException
@@ -63,7 +63,7 @@ Roland van Ipenburg, E<lt>ipenburg@xs4all.nlE<gt>
 
 =head1 LICENSE AND COPYRIGHT
 
-Copyright 2013 by Roland van Ipenburg
+Copyright 2016 by Roland van Ipenburg
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself, either Perl version 5.14.0 or,

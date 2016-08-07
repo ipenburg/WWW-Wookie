@@ -1,9 +1,9 @@
-package WWW::Wookie::Widget 0.100;    # -*- cperl; cperl-indent-level: 4 -*-
+package WWW::Wookie::Widget 0.101;    # -*- cperl; cperl-indent-level: 4 -*-
 use strict;
 use warnings;
 
 use utf8;
-use 5.014000;
+use 5.020000;
 
 use Moose qw/around has/;
 
@@ -53,9 +53,7 @@ around 'BUILDARGS' => sub {
 };
 no Moose;
 
-## no critic qw(RequireExplicitInclusion)
 __PACKAGE__->meta->make_immutable;
-## use critic
 
 1;
 
@@ -71,7 +69,7 @@ WWW::Wookie::Widget - A client side representation of a widget
 
 =head1 VERSION
 
-This document describes WWW::Wookie::Widget version 0.100
+This document describes WWW::Wookie::Widget version 0.101
 
 =head1 SYNOPSIS
 
