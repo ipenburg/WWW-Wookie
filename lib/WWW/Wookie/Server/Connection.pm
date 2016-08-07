@@ -1,5 +1,5 @@
 # -*- cperl; cperl-indent-level: 4 -*-
-package WWW::Wookie::Server::Connection 0.100;
+package WWW::Wookie::Server::Connection 0.101;
 use strict;
 use warnings;
 
@@ -112,7 +112,7 @@ WWW::Wookie::Server::Connection - A connection to a Wookie server
 
 =head1 VERSION
 
-This document describes WWW::Wookie::Server::Connection version 0.100
+This document describes WWW::Wookie::Server::Connection version 0.101
 
 =head1 SYNOPSIS
 

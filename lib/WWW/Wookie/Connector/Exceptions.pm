@@ -1,5 +1,5 @@
 # -*- cperl; cperl-indent-level: 4 -*-
-package WWW::Wookie::Connector::Exceptions 0.100;
+package WWW::Wookie::Connector::Exceptions 0.101;
 use strict;
 use warnings;
 

@@ -1,5 +1,5 @@
 # -*- cperl; cperl-indent-level: 4 -*-
-package WWW::Wookie::Connector::Service 0.100;
+package WWW::Wookie::Connector::Service 0.101;
 use strict;
 use warnings;
 
@@ -667,7 +667,7 @@ data requests and responses
 
 =head1 VERSION
 
-This document describes WWW::Wookie::Connector::Service version 0.100
+This document describes WWW::Wookie::Connector::Service version 0.101
 
 =head1 SYNOPSIS
 

@@ -1,5 +1,5 @@
 # -*- cperl; cperl-indent-level: 4 -*-
-package WWW::Wookie::Widget::Instances 0.100;
+package WWW::Wookie::Widget::Instances 0.101;
 use strict;
 use warnings;
 
@@ -48,7 +48,7 @@ available to a host
 
 =head1 VERSION
 
-This document describes WWW::Wookie::Widget::Instances version 0.100
+This document describes WWW::Wookie::Widget::Instances version 0.101
 
 =head1 SYNOPSIS
 

@@ -1,9 +1,10 @@
-WWW::Wookie version 0.100
+WWW::Wookie version 0.101
 =======================================================
 
 This is a Perl implementation of the Wookie Connector Framework. It is intended
 to map the java implementation which should be considered the reference
 implementation of the connector framework.
+The Wookie project is retired http://attic.apache.org/projects/wookie.html
 
 INSTALLATION
 
