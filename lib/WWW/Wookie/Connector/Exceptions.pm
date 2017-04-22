@@ -1,5 +1,5 @@
 # -*- cperl; cperl-indent-level: 4 -*-
-package WWW::Wookie::Connector::Exceptions 0.101;
+package WWW::Wookie::Connector::Exceptions 0.102;
 use strict;
 use warnings;
 
@@ -25,7 +25,7 @@ WWW::Wookie::Connector::Exceptions - Handles exception information
 
 =head1 VERSION
 
-This document describes WWW::Wookie::Connector::Exceptions version 0.04
+This document describes WWW::Wookie::Connector::Exceptions version 0.102
 
 =head1 SYNOPSIS
 
@@ -63,7 +63,7 @@ Roland van Ipenburg, E<lt>ipenburg@xs4all.nlE<gt>
 
 =head1 LICENSE AND COPYRIGHT
 
-Copyright 2016 by Roland van Ipenburg
+Copyright 2017 by Roland van Ipenburg
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself, either Perl version 5.14.0 or,
