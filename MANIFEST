@@ -4,7 +4,6 @@ Build.PL
 MANIFEST
 MANIFEST.SKIP
 README
-SIGNATURE
 lib/WWW/Wookie.pm
 lib/WWW/Wookie/Connector/Exceptions.pm
 lib/WWW/Wookie/Connector/Service/Interface.pm
